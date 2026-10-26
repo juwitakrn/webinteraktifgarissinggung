@@ -1,0 +1,181 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Slider Garis Singgung</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu kolom sempit berisi judul, pertanyaan murid, slider, dua panel gambar, status, dan tiga angka. Palet biru muda selaras dengan foto profil grup. */
+:root{
+--bg:#F1F8FE;--surface:#FFFFFF;--fg:#0F2A44;--muted:#4A647E;--border:#D3E6F5;
+--blue:#1E88E5;--coral:#D9482B;--amber:#9A6A00;--accent-soft:#E1F1FD;
+--ok-bg:#E2F5EA;--ok-fg:#146C43;--warn-bg:#FFF1D0;--warn-fg:#7A4B00;
+--display:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+--body:'Nunito Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--bg:#0B1A29;--surface:#12273B;--fg:#E6F1FB;--muted:#9DB6CC;--border:#264360;
+--blue:#5AB0F5;--coral:#FF8A6B;--amber:#F2C14E;--accent-soft:#183552;
+--ok-bg:#12362A;--ok-fg:#7FE0B0;--warn-bg:#3A2E0F;--warn-fg:#F2C14E;
+color-scheme:dark}
+}
+:root[data-theme="dark"]{
+--bg:#0B1A29;--surface:#12273B;--fg:#E6F1FB;--muted:#9DB6CC;--border:#264360;
+--blue:#5AB0F5;--coral:#FF8A6B;--amber:#F2C14E;--accent-soft:#183552;
+--ok-bg:#12362A;--ok-fg:#7FE0B0;--warn-bg:#3A2E0F;--warn-fg:#F2C14E;
+color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65;
+padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,6vw,40px);line-height:1.15;margin:4px 0 0;text-wrap:balance}
+p{margin:0}
+.ask{background:var(--accent-soft);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.ask b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ask p{font-size:17px}
+.lead{color:var(--muted);max-width:65ch}
+.controls{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row label{font-size:14px;color:var(--muted);font-weight:600}
+button.ang{font:inherit;font-weight:700;font-size:15px;color:var(--fg);background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:6px 18px;min-height:44px;cursor:pointer}
+button.ang:hover{border-color:var(--blue)}
+button.ang:focus-visible,input[type=range]:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--blue);height:44px}
+#aout{font-weight:700;min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.panel{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:10px;min-width:0}
+.panel .cap{font-size:13px;font-weight:600;color:var(--muted);margin:2px 6px 4px}
+.panel svg{display:block;width:100%;height:auto}
+.circ{fill:none;stroke:var(--blue);stroke-width:3}
+.rad{stroke:var(--muted);stroke-width:2;stroke-dasharray:5 4}
+.ln{stroke:var(--coral);stroke-width:3}
+.pdot{fill:var(--coral)}
+.qdot{fill:var(--amber)}
+.odot{fill:var(--fg)}
+.sq{fill:none;stroke:var(--fg);stroke-width:1.5}
+.lb{font-family:var(--body);font-size:15px;font-weight:700;fill:var(--fg)}
+.lr{font-family:var(--body);font-size:13px;fill:var(--muted)}
+#status{padding:12px 16px;border-radius:12px;font-weight:600;line-height:1.5}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.metric{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;min-width:0}
+.metric .k{font-size:13px;color:var(--muted);font-weight:600}
+.metric .v{font-family:var(--display);font-weight:500;font-size:22px;margin-top:2px;font-variant-numeric:tabular-nums}
+.metric .s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+
+<div class="wrap">
+<header>
+<p class="eyebrow">Matematika kelas 11 · Lingkaran</p>
+<h1>Garis Singgung dan Garis Potong</h1>
+</header>
+
+<div class="ask">
+<b>Pertanyaan dari seorang murid</b>
+<p>Kalau sudut antara jari-jari dan garis singgung harus 90°, apa yang terjadi kalau sudutnya bergeser jadi 89° atau 91°? Apakah garisnya masih menyentuh di satu titik?</p>
+</div>
+
+<p class="lead">Geser slider atau pilih salah satu sudut di bawah. Panel kanan memperbesar area di sekitar titik P supaya selisih yang sangat kecil bisa terlihat.</p>
+
+<section class="controls" aria-label="Pengatur sudut">
+<div class="row">
+<label>Coba sudut</label>
+<button class="ang" type="button" onclick="setA(89)">89°</button>
+<button class="ang" type="button" onclick="setA(90)">90°</button>
+<button class="ang" type="button" onclick="setA(91)">91°</button>
+</div>
+<div class="row">
+<label for="a">Sudut α antara jari-jari OP dan garis</label>
+<input type="range" id="a" min="70" max="110" step="1" value="89">
+<span id="aout">89°</span>
+</div>
+</section>
+
+<h2 class="sr-only">Ilustrasi</h2>
+<div class="panels">
+<div class="panel">
+<div class="cap">Tampak utuh</div>
+<svg id="s1" viewBox="0 0 300 300" role="img" aria-label="Lingkaran dengan garis yang melalui titik P"></svg>
+</div>
+<div class="panel">
+<div class="cap">Dekat titik P, diperbesar <span id="zl">×25</span></div>
+<svg id="s2" viewBox="0 0 300 300" role="img" aria-label="Pembesaran area di sekitar titik P"></svg>
+</div>
+</div>
+
+<div id="status" role="status"></div>
+
+<div class="metrics">
+<div class="metric"><div class="k">Jarak pusat O ke garis</div><div class="v" id="m1"></div><div class="s">jari-jari r = 5 cm</div></div>
+<div class="metric"><div class="k">Titik pertemuan</div><div class="v" id="m2"></div><div class="s" id="m2s"></div></div>
+<div class="metric"><div class="k">Panjang tali busur PQ</div><div class="v" id="m3"></div><div class="s">dihitung dari 2r · |cos α|</div></div>
+</div>
+</div>
+
+<script>
+var R=100,RC=5;
+function fmt(x,n){return x.toFixed(n).replace('.',',');}
+function lbl(x,y,t,anchor){return '<text class="lb" x="'+x+'" y="'+y+'" text-anchor="'+anchor+'">'+t+'</text>';}
+function draw(a){
+var rad=a*Math.PI/180;
+var tan=Math.abs(a-90)<0.001;
+var cx=150,cy=125;
+var P={x:cx,y:cy+R};
+var d={x:Math.sin(rad),y:-Math.cos(rad)};
+var t=2*R*Math.cos(rad);
+var Q={x:P.x+t*d.x,y:P.y+t*d.y};
+var L=600;
+var lx1=P.x-L*d.x,ly1=P.y-L*d.y,lx2=P.x+L*d.x,ly2=P.y+L*d.y;
+var pl,ql,pa,qa;
+if(tan){pl=[P.x,P.y+24];pa='middle';}
+else if(t>=0){pl=[P.x-12,P.y+22];pa='end';ql=[Q.x+12,Q.y+22];qa='start';}
+else{pl=[P.x+12,P.y+22];pa='start';ql=[Q.x-12,Q.y+22];qa='end';}
+var s1='<circle class="circ" cx="'+cx+'" cy="'+cy+'" r="'+R+'"/>';
+s1+='<line class="rad" x1="'+cx+'" y1="'+cy+'" x2="'+P.x+'" y2="'+P.y+'"/>';
+s1+='<line class="ln" x1="'+lx1+'" y1="'+ly1+'" x2="'+lx2+'" y2="'+ly2+'"/>';
+if(tan){s1+='<path class="sq" d="M'+P.x+' '+(P.y-14)+'H'+(P.x+14)+'V'+P.y+'"/>';}
+s1+='<circle class="odot" cx="'+cx+'" cy="'+cy+'" r="4"/>'+lbl(cx,cy-10,'O','middle');
+s1+='<circle class="pdot" cx="'+P.x+'" cy="'+P.y+'" r="5"/>'+lbl(pl[0],pl[1],'P',pa);
+if(!tan){s1+='<circle class="qdot" cx="'+Q.x+'" cy="'+Q.y+'" r="5"/>'+lbl(ql[0],ql[1],'Q',qa);}
+s1+='<text class="lr" x="'+(cx+10)+'" y="'+(cy+R/2+4)+'">r</text>';
+document.getElementById('s1').innerHTML=s1;
+var Z=tan?25:Math.min(25,Math.max(1.5,100/Math.abs(t)));
+var zx=150,zy=170;
+var s2='<g transform="translate('+zx+' '+zy+') scale('+Z+') translate('+(-P.x)+' '+(-P.y)+')">';
+s2+='<circle class="circ" cx="'+cx+'" cy="'+cy+'" r="'+R+'" vector-effect="non-scaling-stroke"/>';
+s2+='<line class="rad" x1="'+cx+'" y1="'+cy+'" x2="'+P.x+'" y2="'+P.y+'" vector-effect="non-scaling-stroke"/>';
+s2+='<line class="ln" x1="'+lx1+'" y1="'+ly1+'" x2="'+lx2+'" y2="'+ly2+'" vector-effect="non-scaling-stroke"/>';
+s2+='</g>';
+if(tan){s2+='<path class="sq" d="M'+zx+' '+(zy-14)+'H'+(zx+14)+'V'+zy+'"/>';}
+s2+='<circle class="pdot" cx="'+zx+'" cy="'+zy+'" r="5"/>';
+if(tan){s2+=lbl(zx,zy+24,'P','middle');}
+else{
+var qx=zx+Z*(Q.x-P.x),qy=zy+Z*(Q.y-P.y);
+s2+='<circle class="qdot" cx="'+qx+'" cy="'+qy+'" r="5"/>';
+if(t>=0){s2+=lbl(zx-12,zy+22,'P','end')+lbl(qx+12,qy+22,'Q','start');}
+else{s2+=lbl(zx+12,zy+22,'P','start')+lbl(qx-12,qy+22,'Q','end');}
+}
+document.getElementById('s2').innerHTML=s2;
+document.getElementById('zl').textContent='×'+Math.round(Z);
+var st=document.getElementById('status');
+if(tan){
+st.style.background='var(--ok-bg)';st.style.color='var(--ok-fg)';
+st.textContent='Garis singgung: jarak pusat ke garis sama dengan jari-jari, jadi garis hanya menyentuh lingkaran di 1 titik (P).';
+}else{
+st.style.background='var(--warn-bg)';st.style.color='var(--warn-fg)';
+st.textContent='Garis potong: jarak pusat ke garis lebih kecil dari jari-jari, jadi garis masuk ke dalam lingkaran dan memotongnya di 2 titik (P dan Q).';
+}
+var dist=RC*Math.sin(rad);
+document.getElementById('m1').textContent=fmt(dist,4)+' cm';
+document.getElementById('m2').textContent=tan?'1 titik':'2 titik';
+document.getElementById('m2s').textContent=tan?'P saja':'P dan Q';
+document.getElementById('m3').textContent=tan?'0 mm':fmt(2*RC*Math.abs(Math.cos(rad))*10,2)+' mm';
+document.getElementById('aout').textContent=a+'°';
+}
+function setA(v){document.getElementById('a').value=v;draw(v);}
+document.getElementById('a').addEventListener('input',function(e){draw(parseFloat(e.target.value));});
+draw(89);
+</script>
+
+</body></html>
